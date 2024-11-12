@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>カードコレクション</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: 'Arial', sans-serif;
+        }
+        .collection-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .card-image {
+            max-width: 100%; /* 确保图片不超过其容器 */
+            height: auto; /* 保持图片原比例 */
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+            margin: 20px;
+        }
+        .card-image:hover {
+            transform: scale(1.1);
+        }
+        .card-display {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .card {
+            margin: 10px;
+            max-width: 120px; /* 控制卡片显示的最大宽度 */
+        }
+        .return-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4">カードコレクション</h1>
+        <div class="collection-container">
+            <div class="card-display">
+                {% for rarity, count in data.cards.items() %}
+                    {% if rarity != 'SR+_types' and count > 0 %}
+                        {% for _ in range(count) %}
+                            <div class="card text-center">
+                                {% set image_file = images[rarity]|random %}
+                                <img class="card-image" src="{{ url_for('static', filename='images/' ~ image_file) }}" alt="{{ rarity }}">
+                                <div class="card-body">
+                                    <p class="card-text">{{ rarity }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary return-btn">ガチャに戻る</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
